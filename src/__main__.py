@@ -612,7 +612,7 @@ format_small      = lambda lines, **_attrs : format_(lines, '36')
 format_blockquote = lambda lines, **_attrs : format_(lines, None, '\033[01;31m│\033[00m', 3)
 format_center     = lambda lines, **_attrs : format_(lines, None, ' ' * 20, 20)
 format_small      = lambda lines, **_attrs : format_(lines, '47;30')
-format_small      = lambda lines, **_attrs : format_(lines, '01;33')
+format_caption    = lambda lines, **_attrs : format_(lines, '01;33')
 format_thead      = lambda lines, **_attrs : lines
 format_tbody      = lambda lines, **_attrs : lines
 format_tfoot      = lambda lines, **_attrs : lines
@@ -632,12 +632,18 @@ def format_a(lines, **attrs):
     return lines
 
 
+FORMAT_MAP  = 'b strong em u s strike del ins i tt var code kbd rbi rbo time data figure iframe'
+FORMAT_MAP += ' font basefont noscript span div html body footer header main nav figcaption mark'
+FORMAT_MAP += ' q samp cite h1 h2 h3 h4 h5 h6 dd dt big small blockquote center small caption'
+FORMAT_MAP += ' thead tbody tfoot address article section hr br a'
+FORMAT_MAP = dict((f, globals()['format_' + f]) for f in FORMAT_MAP.split(' '))
+
+
 def print_lines(lines):
     for text, _length in lines:
         print(text)
 
-_ = lambda s : [measure_string(s)]
-print_lines(format_a(_('example.org'), href = 'http://www.example.org/'))
+print_lines(FORMAT_MAP['a']([measure_string('example.org')], href = 'http://www.example.org/'))
 
 
 #  <head>
