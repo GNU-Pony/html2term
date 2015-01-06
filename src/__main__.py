@@ -626,7 +626,7 @@ def format_a(lines, **attrs):
     if ('href' not in attrs) or ((len(lines) == 1) and (lines[0][0] == attrs['href'])):
         return lines
     if len(lines) == 0:
-        return 0
+        return []
     (text, length) = lines[0]
     lines[0] = ('%s (%s)' % (attrs['href'], text), length + 3)
     return lines
@@ -637,7 +637,7 @@ def print_lines(lines):
         print(text)
 
 _ = lambda s : [measure_string(s)]
-print_lines(format_h2(format_code(concatenate(format_b(_('hello')), _(' world')))))
+print_lines(format_a(_('example.org'), href = 'http://www.example.org/'))
 
 
 #  <head>
