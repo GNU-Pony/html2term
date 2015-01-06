@@ -548,77 +548,212 @@ def measure_string(string):
     return rc_str, rc_len
 
 
-#  <html>
+def format_b(lines, **_attrs):
+    return [('\033[01m%s\033[00m' % text, length) for text, length in lines]
+
+def format_strong(lines, **_attrs):
+    return [('\033[01;31m%s\033[00m' % text, length) for text, length in lines]
+
+def format_em(lines, **_attrs):
+    return [('\033[01;04m%s\033[00m' % text, length) for text, length in lines]
+
+def format_u(lines, **_attrs):
+    return [('\033[04m%s\033[00m' % text, length) for text, length in lines]
+
+def format_s(lines, **_attrs):
+    return [('\033[41m%s\033[00m' % text, length) for text, length in lines]
+
+def format_strike(lines, **_attrs):
+    return [('\033[41m%s\033[00m' % text, length) for text, length in lines]
+
+def format_del(lines, **_attrs):
+    return [('\033[31m%s\033[00m' % text, length) for text, length in lines]
+
+def format_ins(lines, **_attrs):
+    return [('\033[32m%s\033[00m' % text, length) for text, length in lines]
+
+def format_i(lines, **_attrs):
+    return [('\033[34m%s\033[00m' % text, length) for text, length in lines]
+
+def format_tt(lines, **_attrs):
+    return [('\033[35m%s\033[00m' % text, length) for text, length in lines]
+
+def format_var(lines, **_attrs):
+    return [('\033[04;34m%s\033[00m' % text, length) for text, length in lines]
+
+def format_code(lines, **_attrs):
+    return [('`\033[35m%s\033[00m`' % text, length) for text, length in lines]
+
+def format_kbd(lines, **_attrs):
+    return [('\033[35m%s\033[00m' % text, length) for text, length in lines]
+
+def format_rbi(lines, **_attrs):
+    return lines
+
+def format_rbo(lines, **_attrs):
+    return lines
+
+def format_time(lines, **_attrs):
+    return lines
+
+def format_data(lines, **_attrs):
+    return lines
+
+def format_figure(lines, **_attrs):
+    return lines
+
+def format_iframe(lines, **_attrs):
+    return lines
+
+def format_font(lines, **_attrs):
+    return lines
+
+def format_basefont(lines, **_attrs):
+    return lines
+
+def format_noscript(lines, **_attrs):
+    return lines
+
+def format_span(lines, **_attrs):
+    return lines
+
+def format_div(lines, **_attrs):
+    return lines
+
+def format_html(lines, **_attrs):
+    return lines
+
+def format_body(lines, **_attrs):
+    return lines
+
+def format_footer(lines, **_attrs):
+    return lines
+
+def format_header(lines, **_attrs):
+    return lines
+
+def format_main(lines, **_attrs):
+    return lines
+
+def format_nav(lines, **_attrs):
+    return lines
+
+def format_figcaption(lines, **_attrs):
+    return [('  %s' % text, 2 + length) for text, length in lines]
+
+def format_mark(lines, **_attrs):
+    return [('\033[43m%s\033[00m' % text, length) for text, length in lines]
+
+def format_q(lines, **_attrs):
+    return [('“%s”' % text, 2 + length) for text, length in lines]
+
+def format_samp(lines, **_attrs):
+    return [('‘%s’' % text, 2 + length) for text, length in lines]
+
+def format_cite(lines, **_attrs):
+    return [('‘%s’' % text, 2 + length) for text, length in lines]
+
+def format_h1(lines, **_attrs):
+    return [('\033[01;44m%s\033[00m' % text, length) for text, length in lines]
+
+def format_h2(lines, **_attrs):
+    return [('  \033[44m%s\033[00m' % text, 2 + length) for text, length in lines]
+
+def format_h3(lines, **_attrs):
+    return [('    \033[44m%s\033[00m' % text, 4 + length) for text, length in lines]
+
+def format_h4(lines, **_attrs):
+    return [('      \033[44m%s\033[00m' % text, 6 + length) for text, length in lines]
+
+def format_h5(lines, **_attrs):
+    return [('        \033[44m%s\033[00m' % text, 8 + length) for text, length in lines]
+
+def format_h6(lines, **_attrs):
+    return [('          \033[44m%s\033[00m' % text, 10 + length) for text, length in lines]
+
+def format_dd(lines, **_attrs):
+    return lines
+
+def format_dt(lines, **_attrs):
+    return [('\033[01m%s\033[00m' % text, length) for text, length in lines]
+
+def format_big(lines, **_attrs):
+    return [('\033[42m%s\033[00m' % text, length) for text, length in lines]
+
+def format_small(lines, **_attrs):
+    return [('\033[36m%s\033[00m' % text, length) for text, length in lines]
+
+def format_blockquote(lines, **_attrs):
+    return [('\033[01;31m│\033[00m  %s' % text, 3 + length) for text, length in lines]
+
+def format_center(lines, **_attrs):
+    return [(' ' * 20 + '%s' % text, 20 + length) for text, length in lines]
+
+def format_aside(lines, **_attrs):
+    return [('\033[47;30m%s\033[00m' % text, length) for text, length in lines]
+
+def format_caption(lines, **_attrs):
+    return [('\033[01;33m%s\033[00m' % text, length) for text, length in lines]
+
+def format_thead(lines, **_attrs):
+    return lines
+
+def format_tbody(lines, **_attrs):
+    return lines
+
+def format_tfoot(lines, **_attrs):
+    return lines
+
+def format_address(lines, **_attrs):
+    return [('    \033[33m%s\033[00m' % text, 4 + length) for text, length in lines]
+
+def format_article(lines, **_attrs):
+    return lines
+
+def format_section(lines, **_attrs):
+    return lines
+
+def format_a(lines, **attrs):
+    if ('href' not in attrs) or ((len(lines) == 1) and (lines[0][0] == attrs['href'])):
+        return lines
+    if len(lines) == 0:
+        return 0
+    (text, length) = lines[0]
+    lines[0] = ('%s (%s)' % (attrs['href'], text), length + 3)
+    return lines
+
+def format_hr(lines, **_attrs):
+    return ['─' * 20, 20] + lines
+
+def format_br(lines, **_attrs):
+    return ['', 0] + lines
+
+
+def print_lines(lines):
+    for text, _length in lines:
+        print(text)
+
+print_lines(format_address([measure_string('hello world')]))
+
+
 #  <head>
-#  <title>
-#  <base>
-#  <body> <footer> <header> <main> <nav>
-#  <article>
-#    <section>
-#  <h1>  Bold, very-large font, centered. One or two blank lines above and below.
-#  <h2>  Bold, large font, flush-left. One or two blank lines above and below.
-#  <h3>  Italic, large font, slightly indented from the left margin. One or two blank lines above and below.
-#  <h4>  Bold, normal font, indented more than H3. One blank line above and below.
-#  <h5>  Italic, normal font, indented as H4. One blank line above.
-#  <h6>  Bold, indented same as normal text, more than H5. One blank line above.
+#    <title>
+#    <base>
 #  <p>
 #  <pre width="wrapping column">  line breaks are included verbatim, tabs is 8
-#  <xmp> = <pre>
-#  <listing> = <pre>
-#  <address>  italic and indented
-#  <blockquote>  slight indentation, italic, extra space above and below, as in e-mail
-#  <ul type="0"/"1"/"a"/"A"/"i"/"I"> <ol type="disc"/"square"/"circle"> <li type="disc"/"square"/"circle">
+#  <xmp> = <listing> = <pre>
+#  <ul type="0"/"1"/"a"/"A"/"i"/"I"||"."/""/")"> <ol>
+#    <li>
 #  <dir>  columnated
-#  <menu> = <ul>
-#  <dt>  definition list
-#  <dt>  definition term
-#  <dd>  definition
-#  <cite>  quotes, italic
-#  <code>
-#  <em>  italic
-#  <kbd>
-#  <samp>  quotes
-#  <strong>  bold
-#  <var>   italic
-#  <b>
-#  <i>
-#  <tt>
-#  <a href=>
-#  <br>
-#  <hr>  '─' * 20
-#  <img src= alt=>
-#  <plaintext>
-#  <div>
-#  <center>
+#  <menu> = <ul type="1.">
+#  <dl>  definition list
 #  <table>
-#     <caption>
-#     <thead> <tbody> <tfoot>
-#         <th rowspan= colspan=> <td rowspan= colspan=> <tr>
-#  <u>
-#  <s>  strike
-#  <strike>
-#  <big>
-#  <small>
-#  <sub>
-#  <sup>
-#  <dfn title=>
-#  <font>
-#  <basefont>
-#  <noscript>
-#  <iframe>text</iframe>
-#  <abbr title="world wide web">www</abbr>
-#  <acronym title=>
-#  <q>  quotes
-#  <del>  red
-#  <ins>  green
-#  <span>
-#  <mark>  highlight
-#  <video src=> <audio src=> <track src= label=>
+#     <th rowspan= colspan=> <td rowspan= colspan=> <tr>
+#  <sub> <sup>
+#  <dfn title=> <acronym title=> <abbr title="world wide web">www</abbr>
+#  <video src=> <audio src=> <track src= label=> <img src= alt=>
 #      <source src=>
 #  <ruby>text<rt>small text above</rt><rtc>long small text beneath</rtc></ruby>
 #  <ruby>top<rb>bottom</rb><rt>stack right of top</rt><rt>stack right of bottom</rt></ruby>
 #      <rp>  only visible during inlining
-#  <rbi> <rbo> <time> <data> <figure>   no formatting
-#  <figcaption>
-#  <aside>
 
