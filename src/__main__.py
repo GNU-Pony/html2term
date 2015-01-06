@@ -157,6 +157,16 @@ CHARACTER_WIDTHS_0000_0FFF = (
     (0x0FC7, 0x0FD0, (1, 2)),
     (0x0FD2, 0x0FDA, (1, 2)),
 )
+'''
+:tuple<(first:int, last:int, (print:int, display:int))>  Measurement of all abnormal characters in the range
+                                                         [U+0000, U+0FFF]. Each element in the list is a
+                                                         subrange of characters with measurements. The subrange
+                                                         is [`first`, `range`]; all assigned characters in this
+                                                         range are believed the be `print` columns width by
+                                                         the terminal but is printed in `display` columns.
+                                                         `display` cannot be lesser than `print`.
+'''
+
 CHARACTER_WIDTHS_1000_1FFF = (
     (0x1000, 0x102A, (1, 2)),
     (0x102B, 0x103E, (0, 0)),
@@ -251,6 +261,16 @@ CHARACTER_WIDTHS_1000_1FFF = (
     (0x1CF8, 0x1CF9, (0, 0)),
     (0x1DC0, 0x1DFF, (0, 0)),
 )
+'''
+:tuple<(first:int, last:int, (print:int, display:int))>  Measurement of all abnormal characters in the range
+                                                         [U+1000, U+1FFF]. Each element in the list is a
+                                                         subrange of characters with measurements. The subrange
+                                                         is [`first`, `range`]; all assigned characters in this
+                                                         range are believed the be `print` columns width by
+                                                         the terminal but is printed in `display` columns.
+                                                         `display` cannot be lesser than `print`.
+'''
+
 CHARACTER_WIDTHS_2000_FFFF = (
     (0x200B, 0x200F, (0, 0)),
     (0x2028, 0x202F, (0, 0)),
@@ -416,6 +436,16 @@ CHARACTER_WIDTHS_2000_FFFF = (
     (0xFFE0, 0xFFE6, (2, 2)),
     (0xFFF9, 0xFFFB, (0, 0)),
 )
+'''
+:tuple<(first:int, last:int, (print:int, display:int))>  Measurement of all abnormal characters in the range
+                                                         [U+2000, U+FFFF]. Each element in the list is a
+                                                         subrange of characters with measurements. The subrange
+                                                         is [`first`, `range`]; all assigned characters in this
+                                                         range are believed the be `print` columns width by
+                                                         the terminal but is printed in `display` columns.
+                                                         `display` cannot be lesser than `print`.
+'''
+
 CHARACTER_WIDTHS_10000_10FFFF = (
     (0x10080, 0x100FF, (1, 2)),
     (0x102E0, 0x102E0, (0, 0)),
@@ -469,9 +499,27 @@ CHARACTER_WIDTHS_10000_10FFFF = (
     (0xE0020, 0xE007F, (0, 0)),
     (0xE0100, 0xE01EF, (0, 0)),
 )
+'''
+:tuple<(first:int, last:int, (print:int, display:int))>  Measurement of all abnormal characters in the range
+                                                         [U+10000, U+10FFFF]. Each element in the list is a
+                                                         subrange of characters with measurements. The subrange
+                                                         is [`first`, `range`]; all assigned characters in this
+                                                         range are believed the be `print` columns width by
+                                                         the terminal but is printed in `display` columns.
+                                                         `display` cannot be lesser than `print`.
+'''
 
 
 def measure_character(character):
+    '''
+    Get the widths of a character
+    
+    @param   character:chr              The character
+    @return  :(print:int, display:int)  The widths of the character, arbitrary measurements if the character
+                                        is not assigned. The character is believed `print` columns width by
+                                        the terminal but is printed in `display` columns. `display` cannot be
+                                        lesser than `print`.
+    '''
     c = ord(character)
     if   0x0000 <= c <= 0x0FFF:  measurements = CHARACTER_WIDTHS_0000_0FFF
     elif 0x1000 <= c <= 0x1FFF:  measurements = CHARACTER_WIDTHS_1000_1FFF
@@ -484,9 +532,16 @@ def measure_character(character):
             return r
     return 1, 1
 
-def measure_string(character):
+
+def measure_string(string):
+    '''
+    Measure a string a construct a string that can be printed without overlapping characters
+    
+    @param   string:str     The string
+    @return  :(:str, :int)  The printable string, and the column-width of the string
+    '''
     rc_str, rc_len = '', 0
-    for c in character:
+    for c in string:
         a, b = measure_character(c)
         rc_str += c + ' ' * (b - a)
         rc_len += b
