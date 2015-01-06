@@ -24,8 +24,13 @@ def td(lines, **attrs):
     except:  cols = 1
     return lines, rows, cols
 
+
+th = td
+
+
 def tr(cells, **_attrs):
     return cells
+
 
 def table(rows, **_attrs):
     # Get table cells
@@ -54,29 +59,84 @@ def table(rows, **_attrs):
     for r in range(max_r + 1):
         for c in range(max_c + 1):
             if rc[r][c] is None:
-                if   c > 0:  rc[r][c] = rc[r][c - 1]
-                elif r > 0:  rc[r][c] = rc[r - 1][c]
-                else:        rc[r][c] = (('', 0), 1, 1)
+                rc[r][c] = (('', 0), 1, 1)
     # Pad lines
     for r in range(max_r + 1):
         for c in range(max_c + 1):
             cell = rc[r][c]
             if len(cell) == 3:
-                (lines, _1, _2) = cell
+                (lines, rows, cols) = cell
                 maxlen = max(length for _, length in lines)
                 lines = [((text + ' ' * (maxlen - length)), maxlen) for text, length in lines]
-                rc[r][c] = lines
+                rc[r][c] = (lines, rows, cols)
     return table_to_text(rc)
+
 
 def table_to_text(matrix):
     rn, cn = len(matrix), len(matrix[0])
+    # Calculate widths
+    h_ends = []
+    for c in range(cn):
+        maxend = 0 if len(h_ends) == 0 else h_ends[-1]
+        h_ends.append(maxend)
+        for r in range(rn):
+            cell = (r, c)
+            while len(cell) == 2:
+                (r_, c_) = cell
+                cell = matrix[r_][c_]
+            (lines, _rows, cols) = cell
+            if c_ + cols == c + 1:
+                maxend = max(maxend, h_ends[c_] + lines[0][1])
+        h_ends[c] = maxend + 1
+    # Calculate heights
+    v_ends = []
+    for r in range(rn):
+        maxend = 0 if len(v_ends) == 0 else v_ends[-1]
+        v_ends.append(maxend)
+        for c in range(cn):
+            cell = (r, c)
+            while len(cell) == 2:
+                (r_, c_) = cell
+                cell = matrix[r_][c_]
+            (lines, rows, _cols) = cell
+            if r_ + rows == r + 1:
+                maxend = max(maxend, v_ends[r_] + len(lines))
+        v_ends[r] = maxend + 1
+    # Fix widths
+    h_ends = [0] + h_ends
     for r in range(rn):
         for c in range(cn):
-            pass
+            cell = matrix[r][c]
+            if len(cell) == 3:
+                (lines, rows, cols) = cell
+                end_col = c + cols
+                newlen = h_ends[end_col] - h_ends[c]
+                extra = newlen - lines[0][1] - 1
+                lines = [((text + ' ' * extra + '│'), newlen) for text, _ in lines]
+                matrix[r][c] = (lines, rows, cols)
+    # Fix heights
+    v_ends = [0] + v_ends
+    for r in range(rn):
+        for c in range(cn):
+            cell = matrix[r][c]
+            if len(cell) == 3:
+                (lines, rows, cols) = cell
+                end_row = r + rows
+                newlen = v_ends[end_row] - v_ends[r]
+                extra = newlen - len(lines)
+                lines += [(' ' * (lines[0][1] - 1) + '│', lines[0][1])] * (extra - 1)
+                lines += [('─' * (lines[0][1] - 1) + '┘', lines[0][1])]
+                matrix[r][c] = (lines, rows, cols)
+    # Make table
+    for r in range(rn):
+        for c in range(cn):
+            cell = matrix[r][c]
+            if len(cell) == 3:
+                (lines, _rows, _cols) = cell
+                for line, _ in lines:
+                    print(line)
     return matrix
-    
 
-th = td
 
 # ─│┌┐└┘├┤┬┴┼
 
