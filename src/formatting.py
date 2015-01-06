@@ -86,6 +86,7 @@ format_section    = lambda lines, **_attrs : lines
 format_hr         = lambda lines, **_attrs : ['─' * 20, 20] + lines
 format_br         = lambda lines, **_attrs : ['', 0] + lines
 format_li         = lambda lines, **_attrs : lines
+format_th         = lambda lines, **_attrs : format_(lines, '01')
 
 def format_a(lines, **attrs):
     if ('href' not in attrs) or ((len(lines) == 1) and (lines[0][0] == attrs['href'])):
@@ -141,6 +142,6 @@ FORMAT_MAP  = 'b strong em u s strike del ins i tt var code kbd rbi rbo time dat
 FORMAT_MAP += ' font basefont noscript span div html body footer header main nav figcaption mark'
 FORMAT_MAP += ' q samp cite h1 h2 h3 h4 h5 h6 dd dt big small blockquote center small caption'
 FORMAT_MAP += ' thead tbody tfoot address article section hr br a source video audio track img'
-FORMAT_MAP += ' dfn acronym abbr li'
+FORMAT_MAP += ' dfn acronym abbr li th'
 FORMAT_MAP = dict((f, globals()['format_' + f]) for f in FORMAT_MAP.split(' '))
 

@@ -42,11 +42,12 @@ print_lines(FORMAT_MAP['abbr']([measure_string('www')], title = 'world wide web'
 #  <ul type="0"/"1"/"a"/"A"/"i"/"I"||"."/""/")"> <ol> { <li> }
 #  <dir>  columnated
 #  <menu> = <ul type="1.">
-#  <dl>  definition list { dt dd }
+#  <dl>  definition list { <dt> <dd> }
 #  <table>
-#     <th rowspan= colspan=> <td rowspan= colspan=> <tr>
+#    <tr>
+#      <th rowspan= colspan=> <td rowspan= colspan=>
 #  <sub> <sup>
 #  <ruby>text<rt>small text above</rt><rtc>long small text beneath</rtc></ruby>
 #  <ruby>top<rb>bottom</rb><rt>stack right of top</rt><rt>stack right of bottom</rt></ruby>
-#      <rp>  only visible during inlining
+#    <rp>  only visible during inlining
 
