@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from measurement import *
 from formatting import *
+from tables import *
 
 
 def concatenate(left, right):
@@ -31,7 +32,18 @@ def print_lines(lines):
     for text, _length in lines:
         print(text)
 
-print_lines(FORMAT_MAP['abbr']([measure_string('www')], title = 'world wide web'))
+tr_1 = tr([th([measure_string('1')], colspan = 2, rowspan = 2),
+           th([measure_string('2')], colspan = 2),
+           th([measure_string('3')], rowspan = 2),
+           th([measure_string('4')])])
+tr_2 = tr([td([measure_string('5')], colspan = 2, rowspan = 2),
+           td([measure_string('6')])])
+tr_3 = tr([td([measure_string('7')]),
+           td([measure_string('8')]),
+           td([measure_string('9')], colspan = 2)])
+t = table([tr_1, tr_2, tr_3])
+
+print(t)
 
 #  <head>
 #    <title>
@@ -42,9 +54,6 @@ print_lines(FORMAT_MAP['abbr']([measure_string('www')], title = 'world wide web'
 #  <ul type="0"/"1"/"a"/"A"/"i"/"I"||"."/""/")"> <ol> { <li> }
 #  <dir>  columnated
 #  <menu> = <ul type="1.">
-#  <table>
-#    <tr>
-#      <th rowspan= colspan=> <td rowspan= colspan=>
 #  <sub> <sup>
 #  <ruby>text<rt>small text above</rt><rtc>long small text beneath</rtc></ruby>
 #  <ruby>top<rb>bottom</rb><rt>stack right of top</rt><rt>stack right of bottom</rt></ruby>
