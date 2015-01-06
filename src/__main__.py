@@ -42,7 +42,6 @@ print_lines(FORMAT_MAP['abbr']([measure_string('www')], title = 'world wide web'
 #  <ul type="0"/"1"/"a"/"A"/"i"/"I"||"."/""/")"> <ol> { <li> }
 #  <dir>  columnated
 #  <menu> = <ul type="1.">
-#  <dl>  definition list { <dt> <dd> }
 #  <table>
 #    <tr>
 #      <th rowspan= colspan=> <td rowspan= colspan=>
