@@ -31,8 +31,7 @@ def print_lines(lines):
     for text, _length in lines:
         print(text)
 
-print_lines(FORMAT_MAP['a']([measure_string('example.org')], href = 'http://www.example.org/'))
-
+print_lines(FORMAT_MAP['abbr']([measure_string('www')], title = 'world wide web'))
 
 #  <head>
 #    <title>
@@ -48,9 +47,6 @@ print_lines(FORMAT_MAP['a']([measure_string('example.org')], href = 'http://www.
 #  <table>
 #     <th rowspan= colspan=> <td rowspan= colspan=> <tr>
 #  <sub> <sup>
-#  <dfn title=> <acronym title=> <abbr title="world wide web">www</abbr>
-#  <video src=> <audio src=> <track src= label=> <img src= alt=>
-#      <source src=>
 #  <ruby>text<rt>small text above</rt><rtc>long small text beneath</rtc></ruby>
 #  <ruby>top<rb>bottom</rb><rt>stack right of top</rt><rt>stack right of bottom</rt></ruby>
 #      <rp>  only visible during inlining

@@ -92,13 +92,54 @@ def format_a(lines, **attrs):
     if len(lines) == 0:
         return []
     (text, length) = lines[0]
-    lines[0] = ('%s (%s)' % (attrs['href'], text), length + 3)
+    lines[0] = ('%s (%s' % (attrs['href'], text), length + 3)
+    (text, length) = lines[-1]
+    lines[-1] = ('%s)' % text, length)
     return lines
 
+def format_source(lines, **attrs):
+    indent = 2 if 'src' in attrs else 0
+    lines = format_(lines, None, ' ' * indent, indent)
+    if 'src' in attrs:
+        lines = [measure_string(attrs['src'])] + lines
+    return lines
+
+def format_video(lines, **attrs):
+    indent = 2 if 'src' in attrs else 0
+    lines = format_(lines, None, ' ' * indent, indent)
+    prefix, label = None, None
+    if 'alt'   in attrs:  label = 'alt'
+    if 'title' in attrs:  label = 'title'
+    if label is not None:
+        prefix = attrs[label]
+    if ('src' in attrs) and (label is not None):
+        prefix = '%s (%s)' % (prefix, attrs['src'])
+    elif 'src' in attrs:
+        prefix = attrs['src']
+    return ([measure_string(prefix)] + lines) if prefix is not None else lines
+
+format_audio = format_video
+format_track = format_video
+format_img = format_video
+
+def format_dfn(lines, **attrs):
+    if ('title' not in attrs) or ((len(lines) == 1) and (lines[0][0] == attrs['title'])):
+        return lines
+    if len(lines) == 0:
+        return []
+    (text, length) = lines[0]
+    lines[0] = ('%s (%s' % (attrs['title'], text), length + 3)
+    (text, length) = lines[-1]
+    lines[-1] = ('%s)' % text, length)
+    return lines
+
+format_acronym = format_dfn
+format_abbr = format_dfn
 
 FORMAT_MAP  = 'b strong em u s strike del ins i tt var code kbd rbi rbo time data figure iframe'
 FORMAT_MAP += ' font basefont noscript span div html body footer header main nav figcaption mark'
 FORMAT_MAP += ' q samp cite h1 h2 h3 h4 h5 h6 dd dt big small blockquote center small caption'
-FORMAT_MAP += ' thead tbody tfoot address article section hr br a'
+FORMAT_MAP += ' thead tbody tfoot address article section hr br a source video audio track img'
+FORMAT_MAP += ' dfn acronym abbr'
 FORMAT_MAP = dict((f, globals()['format_' + f]) for f in FORMAT_MAP.split(' '))
 
