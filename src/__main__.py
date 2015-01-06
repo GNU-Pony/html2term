@@ -39,11 +39,10 @@ print_lines(FORMAT_MAP['abbr']([measure_string('www')], title = 'world wide web'
 #  <p>
 #  <pre width="wrapping column">  line breaks are included verbatim, tabs is 8
 #  <xmp> = <listing> = <pre>
-#  <ul type="0"/"1"/"a"/"A"/"i"/"I"||"."/""/")"> <ol>
-#    <li>
+#  <ul type="0"/"1"/"a"/"A"/"i"/"I"||"."/""/")"> <ol> { <li> }
 #  <dir>  columnated
 #  <menu> = <ul type="1.">
-#  <dl>  definition list
+#  <dl>  definition list { dt dd }
 #  <table>
 #     <th rowspan= colspan=> <td rowspan= colspan=> <tr>
 #  <sub> <sup>
