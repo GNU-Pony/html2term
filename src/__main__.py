@@ -548,170 +548,77 @@ def measure_string(string):
     return rc_str, rc_len
 
 
-def format_b(lines, **_attrs):
-    return [('\033[01m%s\033[00m' % text, length) for text, length in lines]
+def concatenate(left, right):
+    if len(left) == 0:  return right
+    if len(right) == 0:  return left
+    return left[:-1] + [tuple(left[-1][i] + right[0][i] for i in range(2))] + right[1:]
 
-def format_strong(lines, **_attrs):
-    return [('\033[01;31m%s\033[00m' % text, length) for text, length in lines]
+def format_(lines, fmt, prestr = '', prelen = 0, sufstr = '', suflen = 0):
+    def replace_(text):
+        text = text.replace('\033[00m', '\033[00;%sm' % fmt)
+        text = text.replace('\033[00;', '\033[00;%s;' % fmt)
+        return text
+    if fmt is not None:
+        f = lambda text : '%s\033[%sm%s\033[00m%s' % (prestr, fmt, replace_(text), sufstr)
+    else:
+        f = lambda text : prestr + text + sufstr
+    return [(f(text), prelen + length + suflen) for text, length in lines]
 
-def format_em(lines, **_attrs):
-    return [('\033[01;04m%s\033[00m' % text, length) for text, length in lines]
-
-def format_u(lines, **_attrs):
-    return [('\033[04m%s\033[00m' % text, length) for text, length in lines]
-
-def format_s(lines, **_attrs):
-    return [('\033[41m%s\033[00m' % text, length) for text, length in lines]
-
-def format_strike(lines, **_attrs):
-    return [('\033[41m%s\033[00m' % text, length) for text, length in lines]
-
-def format_del(lines, **_attrs):
-    return [('\033[31m%s\033[00m' % text, length) for text, length in lines]
-
-def format_ins(lines, **_attrs):
-    return [('\033[32m%s\033[00m' % text, length) for text, length in lines]
-
-def format_i(lines, **_attrs):
-    return [('\033[34m%s\033[00m' % text, length) for text, length in lines]
-
-def format_tt(lines, **_attrs):
-    return [('\033[35m%s\033[00m' % text, length) for text, length in lines]
-
-def format_var(lines, **_attrs):
-    return [('\033[04;34m%s\033[00m' % text, length) for text, length in lines]
-
-def format_code(lines, **_attrs):
-    return [('`\033[35m%s\033[00m`' % text, length) for text, length in lines]
-
-def format_kbd(lines, **_attrs):
-    return [('\033[35m%s\033[00m' % text, length) for text, length in lines]
-
-def format_rbi(lines, **_attrs):
-    return lines
-
-def format_rbo(lines, **_attrs):
-    return lines
-
-def format_time(lines, **_attrs):
-    return lines
-
-def format_data(lines, **_attrs):
-    return lines
-
-def format_figure(lines, **_attrs):
-    return lines
-
-def format_iframe(lines, **_attrs):
-    return lines
-
-def format_font(lines, **_attrs):
-    return lines
-
-def format_basefont(lines, **_attrs):
-    return lines
-
-def format_noscript(lines, **_attrs):
-    return lines
-
-def format_span(lines, **_attrs):
-    return lines
-
-def format_div(lines, **_attrs):
-    return lines
-
-def format_html(lines, **_attrs):
-    return lines
-
-def format_body(lines, **_attrs):
-    return lines
-
-def format_footer(lines, **_attrs):
-    return lines
-
-def format_header(lines, **_attrs):
-    return lines
-
-def format_main(lines, **_attrs):
-    return lines
-
-def format_nav(lines, **_attrs):
-    return lines
-
-def format_figcaption(lines, **_attrs):
-    return [('  %s' % text, 2 + length) for text, length in lines]
-
-def format_mark(lines, **_attrs):
-    return [('\033[43m%s\033[00m' % text, length) for text, length in lines]
-
-def format_q(lines, **_attrs):
-    return [('“%s”' % text, 2 + length) for text, length in lines]
-
-def format_samp(lines, **_attrs):
-    return [('‘%s’' % text, 2 + length) for text, length in lines]
-
-def format_cite(lines, **_attrs):
-    return [('‘%s’' % text, 2 + length) for text, length in lines]
-
-def format_h1(lines, **_attrs):
-    return [('\033[01;44m%s\033[00m' % text, length) for text, length in lines]
-
-def format_h2(lines, **_attrs):
-    return [('  \033[44m%s\033[00m' % text, 2 + length) for text, length in lines]
-
-def format_h3(lines, **_attrs):
-    return [('    \033[44m%s\033[00m' % text, 4 + length) for text, length in lines]
-
-def format_h4(lines, **_attrs):
-    return [('      \033[44m%s\033[00m' % text, 6 + length) for text, length in lines]
-
-def format_h5(lines, **_attrs):
-    return [('        \033[44m%s\033[00m' % text, 8 + length) for text, length in lines]
-
-def format_h6(lines, **_attrs):
-    return [('          \033[44m%s\033[00m' % text, 10 + length) for text, length in lines]
-
-def format_dd(lines, **_attrs):
-    return lines
-
-def format_dt(lines, **_attrs):
-    return [('\033[01m%s\033[00m' % text, length) for text, length in lines]
-
-def format_big(lines, **_attrs):
-    return [('\033[42m%s\033[00m' % text, length) for text, length in lines]
-
-def format_small(lines, **_attrs):
-    return [('\033[36m%s\033[00m' % text, length) for text, length in lines]
-
-def format_blockquote(lines, **_attrs):
-    return [('\033[01;31m│\033[00m  %s' % text, 3 + length) for text, length in lines]
-
-def format_center(lines, **_attrs):
-    return [(' ' * 20 + '%s' % text, 20 + length) for text, length in lines]
-
-def format_aside(lines, **_attrs):
-    return [('\033[47;30m%s\033[00m' % text, length) for text, length in lines]
-
-def format_caption(lines, **_attrs):
-    return [('\033[01;33m%s\033[00m' % text, length) for text, length in lines]
-
-def format_thead(lines, **_attrs):
-    return lines
-
-def format_tbody(lines, **_attrs):
-    return lines
-
-def format_tfoot(lines, **_attrs):
-    return lines
-
-def format_address(lines, **_attrs):
-    return [('    \033[33m%s\033[00m' % text, 4 + length) for text, length in lines]
-
-def format_article(lines, **_attrs):
-    return lines
-
-def format_section(lines, **_attrs):
-    return lines
+format_b          = lambda lines, **_attrs : format_(lines, '01')
+format_strong     = lambda lines, **_attrs : format_(lines, '01;31')
+format_em         = lambda lines, **_attrs : format_(lines, '01;04')
+format_u          = lambda lines, **_attrs : format_(lines, '04')
+format_s          = lambda lines, **_attrs : format_(lines, '41')
+format_strike     = lambda lines, **_attrs : format_(lines, '41')
+format_del        = lambda lines, **_attrs : format_(lines, '31')
+format_ins        = lambda lines, **_attrs : format_(lines, '32')
+format_i          = lambda lines, **_attrs : format_(lines, '34')
+format_tt         = lambda lines, **_attrs : format_(lines, '35')
+format_var        = lambda lines, **_attrs : format_(lines, '04;34')
+format_code       = lambda lines, **_attrs : format_(lines, '35', '`', 1, '`', 1)
+format_kbd        = lambda lines, **_attrs : format_(lines, '35')
+format_rbi        = lambda lines, **_attrs : lines
+format_rbo        = lambda lines, **_attrs : lines
+format_time       = lambda lines, **_attrs : lines
+format_data       = lambda lines, **_attrs : lines
+format_figure     = lambda lines, **_attrs : lines
+format_iframe     = lambda lines, **_attrs : lines
+format_font       = lambda lines, **_attrs : lines
+format_basefont   = lambda lines, **_attrs : lines
+format_noscript   = lambda lines, **_attrs : lines
+format_span       = lambda lines, **_attrs : lines
+format_div        = lambda lines, **_attrs : lines
+format_html       = lambda lines, **_attrs : lines
+format_body       = lambda lines, **_attrs : lines
+format_footer     = lambda lines, **_attrs : lines
+format_header     = lambda lines, **_attrs : lines
+format_main       = lambda lines, **_attrs : lines
+format_nav        = lambda lines, **_attrs : lines
+format_figcaption = lambda lines, **_attrs : format_(lines, None, ' ' * 2, 2)
+format_mark       = lambda lines, **_attrs : format_(lines, '43')
+format_q          = lambda lines, **_attrs : format_(lines, None, '“', 1, '”', 1)
+format_samp       = lambda lines, **_attrs : format_(lines, None, '‘', 1, '’', 1)
+format_cite       = lambda lines, **_attrs : format_(lines, None, '‘', 1, '’', 1)
+format_h1         = lambda lines, **_attrs : format_(lines, '01;44')
+format_h2         = lambda lines, **_attrs : format_(lines, '44', ' ' * 2, 2)
+format_h3         = lambda lines, **_attrs : format_(lines, '44', ' ' * 4, 4)
+format_h4         = lambda lines, **_attrs : format_(lines, '44', ' ' * 6, 6)
+format_h5         = lambda lines, **_attrs : format_(lines, '44', ' ' * 8, 8)
+format_h6         = lambda lines, **_attrs : format_(lines, '44', ' ' * 10, 10)
+format_dd         = lambda lines, **_attrs : lines
+format_dt         = lambda lines, **_attrs : format_(lines, '01')
+format_big        = lambda lines, **_attrs : format_(lines, '42')
+format_small      = lambda lines, **_attrs : format_(lines, '36')
+format_blockquote = lambda lines, **_attrs : format_(lines, None, '\033[01;31m│\033[00m', 3)
+format_center     = lambda lines, **_attrs : format_(lines, None, ' ' * 20, 20)
+format_small      = lambda lines, **_attrs : format_(lines, '47;30')
+format_small      = lambda lines, **_attrs : format_(lines, '01;33')
+format_thead      = lambda lines, **_attrs : lines
+format_tbody      = lambda lines, **_attrs : lines
+format_tfoot      = lambda lines, **_attrs : lines
+format_address    = lambda lines, **_attrs : format_(lines, '33', ' ' * 4, 4)
+format_article    = lambda lines, **_attrs : lines
+format_section    = lambda lines, **_attrs : lines
 
 def format_a(lines, **attrs):
     if ('href' not in attrs) or ((len(lines) == 1) and (lines[0][0] == attrs['href'])):
@@ -733,7 +640,8 @@ def print_lines(lines):
     for text, _length in lines:
         print(text)
 
-print_lines(format_address([measure_string('hello world')]))
+_ = lambda s : [measure_string(s)]
+print_lines(format_h2(format_code(concatenate(format_b(_('hello')), _(' world')))))
 
 
 #  <head>
