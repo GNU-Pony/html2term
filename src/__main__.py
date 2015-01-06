@@ -547,3 +547,78 @@ def measure_string(string):
         rc_len += b
     return rc_str, rc_len
 
+
+#  <html>
+#  <head>
+#  <title>
+#  <base>
+#  <body> <footer> <header> <main> <nav>
+#  <article>
+#    <section>
+#  <h1>  Bold, very-large font, centered. One or two blank lines above and below.
+#  <h2>  Bold, large font, flush-left. One or two blank lines above and below.
+#  <h3>  Italic, large font, slightly indented from the left margin. One or two blank lines above and below.
+#  <h4>  Bold, normal font, indented more than H3. One blank line above and below.
+#  <h5>  Italic, normal font, indented as H4. One blank line above.
+#  <h6>  Bold, indented same as normal text, more than H5. One blank line above.
+#  <p>
+#  <pre width="wrapping column">  line breaks are included verbatim, tabs is 8
+#  <xmp> = <pre>
+#  <listing> = <pre>
+#  <address>  italic and indented
+#  <blockquote>  slight indentation, italic, extra space above and below, as in e-mail
+#  <ul type="0"/"1"/"a"/"A"/"i"/"I"> <ol type="disc"/"square"/"circle"> <li type="disc"/"square"/"circle">
+#  <dir>  columnated
+#  <menu> = <ul>
+#  <dt>  definition list
+#  <dt>  definition term
+#  <dd>  definition
+#  <cite>  quotes, italic
+#  <code>
+#  <em>  italic
+#  <kbd>
+#  <samp>  quotes
+#  <strong>  bold
+#  <var>   italic
+#  <b>
+#  <i>
+#  <tt>
+#  <a href=>
+#  <br>
+#  <hr>  '─' * 20
+#  <img src= alt=>
+#  <plaintext>
+#  <div>
+#  <center>
+#  <table>
+#     <caption>
+#     <thead> <tbody> <tfoot>
+#         <th rowspan= colspan=> <td rowspan= colspan=> <tr>
+#  <u>
+#  <s>  strike
+#  <strike>
+#  <big>
+#  <small>
+#  <sub>
+#  <sup>
+#  <dfn title=>
+#  <font>
+#  <basefont>
+#  <noscript>
+#  <iframe>text</iframe>
+#  <abbr title="world wide web">www</abbr>
+#  <acronym title=>
+#  <q>  quotes
+#  <del>  red
+#  <ins>  green
+#  <span>
+#  <mark>  highlight
+#  <video src=> <audio src=> <track src= label=>
+#      <source src=>
+#  <ruby>text<rt>small text above</rt><rtc>long small text beneath</rtc></ruby>
+#  <ruby>top<rb>bottom</rb><rt>stack right of top</rt><rt>stack right of bottom</rt></ruby>
+#      <rp>  only visible during inlining
+#  <rbi> <rbo> <time> <data> <figure>   no formatting
+#  <figcaption>
+#  <aside>
+
