@@ -575,8 +575,8 @@ format_ins        = lambda lines, **_attrs : format_(lines, '32')
 format_i          = lambda lines, **_attrs : format_(lines, '34')
 format_tt         = lambda lines, **_attrs : format_(lines, '35')
 format_var        = lambda lines, **_attrs : format_(lines, '04;34')
-format_code       = lambda lines, **_attrs : format_(lines, '35', '`', 1, '`', 1)
-format_kbd        = lambda lines, **_attrs : format_(lines, '35')
+format_code       = lambda lines, **_attrs : format_(lines, '45', '`', 1, '`', 1)
+format_kbd        = lambda lines, **_attrs : format_(lines, '33')
 format_rbi        = lambda lines, **_attrs : lines
 format_rbo        = lambda lines, **_attrs : lines
 format_time       = lambda lines, **_attrs : lines
@@ -619,6 +619,8 @@ format_tfoot      = lambda lines, **_attrs : lines
 format_address    = lambda lines, **_attrs : format_(lines, '33', ' ' * 4, 4)
 format_article    = lambda lines, **_attrs : lines
 format_section    = lambda lines, **_attrs : lines
+format_hr         = lambda lines, **_attrs : ['─' * 20, 20] + lines
+format_br         = lambda lines, **_attrs : ['', 0] + lines
 
 def format_a(lines, **attrs):
     if ('href' not in attrs) or ((len(lines) == 1) and (lines[0][0] == attrs['href'])):
@@ -628,12 +630,6 @@ def format_a(lines, **attrs):
     (text, length) = lines[0]
     lines[0] = ('%s (%s)' % (attrs['href'], text), length + 3)
     return lines
-
-def format_hr(lines, **_attrs):
-    return ['─' * 20, 20] + lines
-
-def format_br(lines, **_attrs):
-    return ['', 0] + lines
 
 
 def print_lines(lines):
