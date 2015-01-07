@@ -127,16 +127,59 @@ def table_to_text(matrix):
                 lines += [(' ' * (lines[0][1] - 1) + '│', lines[0][1])] * (extra - 1)
                 lines += [('─' * (lines[0][1] - 1) + '┘', lines[0][1])]
                 matrix[r][c] = (lines, rows, cols)
-    # Make table
+    # Get corners
+    h_corners, v_corners = set(), set()
+    for r in range(rn):
+        for c in range(cn):
+            cell = matrix[r][c]
+            if len(cell) == 3:
+                (lines, rows, cols) = cell
+                y1, y2 = v_ends[r], v_ends[r + rows] - 1
+                x1, x2 = h_ends[c], h_ends[c + cols] - 1
+                h_corners.add((y2, x1))
+                v_corners.add((y1, x2))
+    # Fix corners
     for r in range(rn):
         for c in range(cn):
             cell = matrix[r][c]
             if len(cell) == 3:
                 (lines, _rows, _cols) = cell
-                for line, _ in lines:
-                    print(line)
-    return matrix
-
-
-# ─│┌┐└┘├┤┬┴┼
+                rows, cols = len(lines), lines[0][1]
+                R, C = v_ends[r], h_ends[c]
+                for r_ in range(rows - 1):
+                    if (R + r_, C + cols) in h_corners:
+                        lines[r_] = (lines[r_][0][:-1] + '├', lines[r_][1])
+                for c_ in range(cols - 1):
+                    if (R + rows, C + c_) in v_corners:
+                        lines[-1] = (lines[-1][0][:c_] + '┬' + lines[-1][0][c_ + 1:], lines[-1][1])
+                h = (R + rows - 1, C + cols) in h_corners
+                v = (R + rows, C + cols - 1) in v_corners
+                corner = lines[-1][0][-1]
+                if h and v:  corner = '┼'
+                elif h:      corner = '┴'
+                elif v:      corner = '┤'
+                lines[-1] = (lines[-1][0][:-1] + corner, lines[-1][1])
+                matrix[r][c] = (lines, rows, cols)
+    # Make table
+    rc = [[] for _ in range(v_ends[-1])]
+    lengths = [1] * v_ends[-1]
+    for r in range(rn):
+        for c in range(cn):
+            cell = matrix[r][c]
+            if len(cell) == 3:
+                (lines, _rows, _cols) = cell
+                R = v_ends[r]
+                for r_, (line, length) in enumerate(lines):
+                    rc[R + r_].append((c, line))
+                    lengths[R + r_] += length
+    for r in range(len(rc)):
+        rc[r].sort(key = lambda x : x[0])
+        line = ''
+        for _, segment in rc[r]:
+            line += segment
+        rc[r] = line
+    rc = [('├' if (r, 0) in h_corners else '│') + line for r, line in enumerate(rc[:-1])] + [rc[-1]]
+    rc[-1] = '└' + rc[-1]
+    rc = ['┌%s┐' % ''.join(('┬' if (0, c) in v_corners else '─') for c in range(h_ends[-1] - 1))] + rc
+    return list(zip(rc, [h_ends[-1] + 1] + lengths))
 

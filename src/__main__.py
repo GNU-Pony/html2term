@@ -43,7 +43,7 @@ tr_3 = tr([td([measure_string('7')]),
            td([measure_string('9')], colspan = 2)])
 t = table([tr_1, tr_2, tr_3])
 
-print(t)
+print_lines(t)
 
 #  <head>
 #    <title>
